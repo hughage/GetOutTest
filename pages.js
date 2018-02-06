@@ -56,6 +56,24 @@ function introPage(){
 
     this.draw = function(){  
         this.image1.resize(0, height/2);
+        image(this.image1,(width)-(this.image1.width),height-(this.image1.height/2));
+    }
+}
+
+function qestionPage(){
+
+    this.image1 = loadImage("assets/sloth.png");
+
+    this.reset = function(){
+        this.image1 = loadImage("assets/sloth.png");
+        print("bang");
+    }
+
+    this.setUp = function(){
+    }
+
+    this.draw = function(){  
+        this.image1.resize(0, height/2);
         image(this.image1,(width/2)-(this.image1.width/2),height-this.image1.height);
     }
 }

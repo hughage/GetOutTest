@@ -1,6 +1,7 @@
 var pages =[];
 var currentPage=0;
 var topLeftLogo;
+var speech = new p5.Speech();
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -8,12 +9,14 @@ function setup() {
     pages.push(new beginPage());
     pages.push(new anotherPage()); 
     pages.push(new introPage());
+    voiceSetup();
     textAlign(CENTER);
 }
 
 function draw() {
     background(184,230,194);
     drawHeader();
+    drawText();
     pages[currentPage].draw();
 }
 
@@ -21,10 +24,10 @@ function drawHeader(){
     image(topLeftLogo,10,10);
 }
 
-
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     pages[currentPage].reset();
+    voiceOptionsBox.position((width/2)-60,height-30);
 }
 
 function mousePressed() {
@@ -33,5 +36,4 @@ function mousePressed() {
     } else{
         currentPage =0;
     }
-    
 }
