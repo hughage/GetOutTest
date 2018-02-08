@@ -89,7 +89,6 @@
         that.voices = window.speechSynthesis.getVoices();
         that.isLoaded = 1; // we're ready
         console.log("p5.Speech: voices loaded!");
-        putVoicesInBox();
 
         if(that.initvoice!=undefined) {
           that.setVoice(that.initvoice); // set a custom initial voice

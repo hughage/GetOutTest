@@ -28,7 +28,6 @@ var q5 = {
 var questionSelect = 0;
 var questions =[];
 var xPos = 0;
-var moveSpeed = 40;
 
 var textColor = [184,230,194];
 var horizontalOffset = headerSize;
@@ -36,6 +35,7 @@ var verticalOffset = headerSize;
 var textOffset = 20;
 
 var butSelected =0;
+var hoverSelected =2;
 
 
 function loadQuestions(){
@@ -61,9 +61,15 @@ function drawQuestion(){
 }
 
 function drawQuestionText(){
+
     textSize(30);
     textAlign(CENTER);
-    text(questions[questionSelect].question,horizontalOffset+textOffset+xPos,verticalOffset+textOffset,(textAreaWidth -(2*textOffset)), textAreaHeight/3);
+    var QuestionPadding = 10;
+    var tw = textAreaWidth -(2*QuestionPadding);
+    var th = textAreaHeight -(2*QuestionPadding)
+    var x0 = (width/2) - (tw/2) +xPos;
+    var y0 = headerSize+QuestionPadding;
+    text(questions[questionSelect].question,x0,y0,tw,th);
 }
 
 function drawTextArea(){
@@ -75,13 +81,15 @@ function drawTextArea(){
 }
 
 function updateSlide(){
+    var moveSpeed = 80;
     if(xPos==0){     
-    } else if(xPos<moveSpeed && xPos>-moveSpeed){
-        xPos==0;
-    }else if(xPos>0){
+    } else if(xPos<=moveSpeed && xPos>=-moveSpeed){
+        xPos =0 ;
+        print("zero dude");
+    }else if(xPos>moveSpeed){
         xPos = xPos-moveSpeed;
         print(xPos);
-    } else {
+    } else if (xPos<-moveSpeed){
         xPos = xPos+moveSpeed;
         print(xPos);
     }
@@ -89,41 +97,47 @@ function updateSlide(){
 
 function drawAnswerBoxes(){
     var answerBoxPadding = 10;
-    var aw = ((textAreaWidth)-2*(right.width))/questions.length;
-    var ah = 2*(textAreaHeight/3);
-    var x0 = ((width/2)-(textAreaWidth/2))+left.width;
+    var aw = (textAreaWidth)/questions.length;
+    var ah = (textAreaHeight/3);
+    var x0 = ((width/2)-(textAreaWidth/2));
     var y0 = ((textAreaHeight/2))+headerSize;
     for(var i =0; i< questions.length; i++){
         stroke(textColor);
         if(butSelected == i){
+            noFill();
+            ellipse(x0+(i*aw)+(aw/2),y0-(ah/3),40,40);
             fill(textColor);
+            
         } else {
             fill(255);
         }       
-        ellipse(x0+(i*aw)+(aw/2),y0,20,20);
+        ellipse(x0+(i*aw)+(aw/2),y0-(ah/3),30,30);
     }
     textAlign(CENTER);
     fill(textColor);
-    text("Mostly\nagree",x0+(aw/2),y0+60);
-    text("Mostly\ndisagree",x0+((questions.length-1)*aw)+(aw/2),y0+60);
-    text("Niether\ndisagree or agree",x0+(((questions.length-1)/2)*aw)+(aw/2),y0+60);
+    text("Mostly agree",x0-(aw/2),y0,aw*2,ah/2);
+    text("Mostly disagree",x0+((questions.length-1)*aw)-(aw/2),y0,aw*2,ah/2);
+    text("Neither disagree or agree",x0+(((questions.length-1)/2)*aw)-(aw/2),y0,aw*2,ah/2);
 }
+
 
 function drawArrowSelection(){
 
-    var arrowHeight = headerSize+(2*(textAreaHeight/3))-(right.height/2);
-
-    if (mouseY<headerSize+textAreaHeight && mouseY>headerSize){
-        if(mouseX<(width/2)-(textAreaWidth/2)+left.width){
-            image(altLeft,(width/2)-(textAreaWidth/2), arrowHeight);
-            image(right,(width/2)+(textAreaWidth/2)-right.width, arrowHeight);
-        }else if(mouseX>(width/2)+(textAreaWidth/2)-right.width){
-            image(left,(width/2)-(textAreaWidth/2), arrowHeight);
-            image(altRight,(width/2)+(textAreaWidth/2)-right.width, arrowHeight);
-        } else {
-            image(left,(width/2)-(textAreaWidth/2),arrowHeight);
-            image(right,(width/2)+(textAreaWidth/2)-right.width,arrowHeight);
-        }
+    var arrowHeight = headerSize+(5*(textAreaHeight/6))-(right.height/2);
+    var spacingBetween = 50;
+    var lx = (width/2)-spacingBetween-left.width;
+    var rx = (width/2)+spacingBetween;
+    if (mouseY<headerSize+textAreaHeight && mouseY>headerSize+(2*textAreaHeight)/3){
+        if(mouseX<(width/2)){
+            image(altLeft,lx,arrowHeight);
+            image(right,rx,arrowHeight);
+        }else if(mouseX>(width/2)){
+            image(left,lx,arrowHeight);
+            image(altRight,rx,arrowHeight);
+        } 
+    } else{
+        image(left,lx,arrowHeight);
+        image(right,rx,arrowHeight);
     }
 }
 

@@ -11,6 +11,8 @@ var headerSize = 100;
 var textAreaHeight;
 var textAreaWidth;
 
+var screenRatio;
+
 var appColour = [184,230,194];
 
 function setup() {
@@ -28,6 +30,7 @@ function draw() {
     drawHeader();
     drawQuestion();
     drawSloth();
+    drawScreenRatio();
     // pages[currentPage].draw();
 }
 
@@ -70,7 +73,14 @@ function windowResized() {
     pages[currentPage].reset();
 }
 
-function mousePressed() {
+function drawScreenRatio(){
+    screenRatio = nf(width/height,1,2);
+    textAlign(LEFT);
+    fill(255);
+    text("width: "+width+" height: "+ height+" ratio: "+ screenRatio,20,height-20);
+}
+
+function touchStarted() {
 
     if(mouseY<headerSize){
         voiceOn =!voiceOn;
@@ -79,14 +89,24 @@ function mousePressed() {
         }
     } 
 
-    if (mouseY<headerSize+textAreaHeight && mouseY>headerSize){
-        if(mouseX<(width/2)-(textAreaWidth/2)+left.width){
+    if (mouseY>headerSize+(2*(textAreaHeight/3)) && mouseY<headerSize+textAreaHeight){
+        if(mouseX<(width/2) && mouseX>(width/2)-(textAreaWidth/2)){
             previousQuestion();
         }
-        if(mouseX>(width/2)+(textAreaWidth/2)-right.width){
+        if(mouseX>(width/2) && mouseX<(width/2)+(textAreaWidth/2)){
             nextQuestion();
         }
     }
 
-
+    if(mouseY>(headerSize+(textAreaHeight/3)) && mouseY<headerSize+(textAreaHeight/2)){
+        if(mouseX<(width/2)+(textAreaWidth/2) && mouseX>(width/2)-(textAreaWidth/2)){
+            var aw = (textAreaWidth)/questions.length;
+            var x0 = ((width/2)-(textAreaWidth/2));
+            for( var i=0; i<questions.length; i++){
+                if(abs(mouseX-(x0+(i*aw)+(aw/2)))<aw/2){
+                    butSelected =i;
+                }
+            }
+        }
+    }
 }
